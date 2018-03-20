@@ -1,0 +1,78 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Tasks App
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths 
+basePath: /
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /task:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: add_task
+    put:
+      description: Add task
+      # used as the method name of the controller
+      operationId: addtask
+      parameters:
+        - name: data
+          in: body
+          description: Task parameters
+          required: true
+          schema:
+            type: object
+      responses:
+        "200":
+          description: Success
+  /task/{task_id}:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: task
+    get:
+      description: Get task info
+      operationId: get_task
+      parameters:
+       - name: task_id
+         in: path
+         required: true
+         description: task uuid
+         type: string
+         format: uuid
+      responses:
+        "200":
+          description: Success
+    post:
+      description: Update task info
+      operationId: update_task
+      parameters:
+        - name: task_id
+          in: path
+          description: task uuid
+          required: true
+          type: string
+          format: uuid
+        - name: data
+          in: body
+          description: Task parameters
+          required: true
+          schema:
+            type: object
+      responses:
+        "200":
+          description: Success
+           
+      
+    
+  /swagger:
+    x-swagger-pipe: swagger_raw
+# complex objects have schema definitions
